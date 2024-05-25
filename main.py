@@ -13,7 +13,7 @@ for j in range(1,len(conteudo)):
     arestas.append(valores)
     pesos.append(int(conteudo[j].split(" ")[2]))
 G = Grafos.Grafo(vertices, arestas,pesos)
-G.Dijsktra("D")
+G.Dijsktra("a")
 for vertice in G.V:
     print(f"Vertice: {vertice.dado}")
     if vertice.caminhoPonderado!=None:

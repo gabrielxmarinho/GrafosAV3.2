@@ -391,12 +391,16 @@ class Grafo:
                 verticeOtimo.caminhoPonderado=None
             else:
                 verticeOtimo.caminhoPonderado.append(verticeOtimo)
+                #Os predecessores de um vértice é ele e todos os seus anteriores com exceção do vertice Inicial
                 for i in range(1,len(verticeOtimo.caminhoPonderado)):
                     verticeOtimo.predecessores.append(verticeOtimo.caminhoPonderado[i])
                 for verticeDisp in verticesDisponiveis:
                     if verticeDisp.dado in verticeOtimo.conectados:
                         if verticeDisp.custoCaminho > verticeOtimo.custoCaminho + verticeOtimo.custo(self, verticeDisp):
                             verticeDisp.custoCaminho = verticeOtimo.custoCaminho + verticeOtimo.custo(self, verticeDisp)
+                            #Reseta-se o caminho,pois foi encontrado um ainda melhor
+                            verticeDisp.caminhoPonderado = [verticeInicial]
+                            #Adiciona-se todos os predecessores do vertice Ótimo ao vertice disponível respectivo
                             for predecessor in verticeOtimo.predecessores:
                                 if predecessor.dado in verticeDisp.caminhoPonderado[len(verticeDisp.caminhoPonderado)-1].conectados:
                                     verticeDisp.caminhoPonderado.append(predecessor)
