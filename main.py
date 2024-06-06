@@ -14,14 +14,13 @@ for j in range(1,len(conteudo)-1):
     pesos.append(int(conteudo[j].split(" ")[2]))
 G = Grafos.Grafo(vertices, arestas,pesos)
 #Passo a última linha do conteúdo para o Algoritmo
-G.Dijsktra(conteudo[len(conteudo)-1])
+print(G.BellmanFord(conteudo[len(conteudo)-1]))
 for vertice in G.V:
-    print(f"Vertice: {vertice.dado}")
-    if vertice.caminhoPonderado!=None:
-        for i in range(0,len(vertice.caminhoPonderado)):
-            if i==len(vertice.caminhoPonderado)-1:
-                print(f"{vertice.caminhoPonderado[i].dado}")
-            else:
-                print(f"{vertice.caminhoPonderado[i].dado}->", end="")
-        print(f"Custo = {vertice.custoCaminho}")
-    print("-------------------------------------")
+    print (f"Vertice {vertice.dado}")
+    for i in range(0,len(vertice.caminhoPonderado)):
+        if i == len(vertice.caminhoPonderado)-1:
+            print(f"{vertice.caminhoPonderado[i].dado}")
+        else:
+            print(f"{vertice.caminhoPonderado[i].dado}->", end=" ")
+    print(vertice.custoCaminho)
+    print("--------------------------------------------------")

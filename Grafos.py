@@ -405,6 +405,49 @@ class Grafo:
                                 if predecessor.dado in verticeDisp.caminhoPonderado[len(verticeDisp.caminhoPonderado)-1].conectados:
                                     verticeDisp.caminhoPonderado.append(predecessor)
                 verticesDisponiveis.remove(verticeOtimo)
+    
+    #Relaxamento
+    def Relax(self,Inicio,verticeOrigem,verticeFim):
+        if verticeFim.custoCaminho > verticeOrigem.custoCaminho + verticeOrigem.custo(self, verticeFim):
+            verticeFim.custoCaminho = verticeOrigem.custoCaminho + verticeOrigem.custo(self, verticeFim)
+            verticeFim.caminhoPonderado=[Inicio]
+            for i in range(1,len(verticeOrigem.caminhoPonderado)):
+                verticeFim.caminhoPonderado.append(verticeOrigem.caminhoPonderado[i])
+            verticeFim.caminhoPonderado.append(verticeOrigem)
+    #BellmanFord
+    def BellmanFord(self,dado):
+        verticesCicloNegativo = []
+        #Pesquisando o vértice inicial
+        for vertice in self.V:
+            if dado == vertice.dado:
+                verticeInicial = vertice
+        #Iniciando o Caminho Inicial
+        for vertice in self.V:
+            vertice.caminhoPonderado = [verticeInicial]
+        verticeInicial.custoCaminho = 0
+        for i in range(0, len(self.V)-1):
+            for aresta in self.E:
+                self.Relax(verticeInicial,aresta.vertice1,aresta.vertice2)
+        #Completando com o Destino nos Vértices com exceção do Vértice Inicial
+        for vertice in self.V:
+            if vertice.dado == dado:
+                continue
+            vertice.caminhoPonderado.pop(0)
+            vertice.caminhoPonderado.append(vertice)
+        #Verificando a presença de Ciclo Negativo
+        for aresta in self.E:
+            if aresta.vertice2.custoCaminho > aresta.vertice1.custoCaminho + aresta.peso:
+                verticesCicloNegativo.append(aresta.vertice1.dado)
+                verticesCicloNegativo.append(aresta.vertice2.dado)
+        for vertice in self.V:
+            for elemento in vertice.caminhoPonderado:
+                if elemento.dado in verticesCicloNegativo:
+                    vertice.custoCaminho = -math.inf
+            
+
+
+
+
 class Fecho(Grafo):
     def fechoHamiltoniano(self):
         #Montando o Fecho Hamiltoniano
